@@ -5,6 +5,10 @@ import time
 
 app = Flask(__name__)
 
+@app.get("/healthz")
+def healthz():
+    return {"status": "healthy"}, 200
+
 # -----------------------------
 # Logging configuration
 # -----------------------------
