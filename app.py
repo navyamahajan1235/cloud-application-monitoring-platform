@@ -156,6 +156,38 @@ def home():
             <a href="/health">Health API</a>
             <a href="/metrics">Metrics API</a>
         </div>
+        <div class="last-updated">
+    Last updated: <span id="last-updated">just now</span>
+</div>
+
+<script>
+    function updateDashboard() {
+        fetch("/metrics")
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("cpu").textContent =
+                    data.cpu_usage_percent.toFixed(1) + "%";
+
+                document.getElementById("memory").textContent =
+                    data.memory_usage_percent.toFixed(1) + "%";
+
+                document.getElementById("uptime").textContent =
+                    data.uptime_seconds.toFixed(1) + "s";
+
+                document.getElementById("requests").textContent =
+                    data.request_count;
+
+                document.getElementById("last-updated").textContent =
+                    new Date().toLocaleTimeString();
+            })
+            .catch(error => {
+                console.error("Failed to fetch metrics:", error);
+            });
+    }
+
+    updateDashboard();
+    setInterval(updateDashboard, 10000);
+</script>
 
     </body>
     </html>
